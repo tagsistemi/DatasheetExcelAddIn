@@ -24,37 +24,53 @@
 </head>
 
 <body class="ms-font-m ms-welcome ms-Fabric">
-    <header class="ms-welcome__header ms-bgColor-neutralLighter" style="background-color: rgba(241, 244, 244, 0.118);">
+    <header class="ms-welcome__header ms-bgColor-neutralLighter" style="background-color: white;">
         <img src="../../assets/logo.png" alt="Contoso" title="Contoso" />
         <h2>Creazione DataSheets</h2>
-        
+        <fast-button id="fastbtn" style="display: none;">Hello world</fast-button>
+        <fluent-button appearance="accent" id="dialogOpener">Show Dialog</fluent-button>
     </header>
+    <main id="app-body" class="" style="display: none; background-color: white; ">
+    <fluent-tabs  activeid="entrees" >
+        <fluent-tab id="home">Home</fluent-tab>
+        <fluent-tab id="settings">Setting</fluent-tab>
 
-
-
-    <main id="app-body" class="ms-welcome__main" style="display: none;">
-
-        <div id="inputgroup" style="padding-left: 20px;padding-right: 20px;display: none;">
-            <div class="input-group mb-3" >
-                <input id="codartinput" type="text" class="form-control" placeholder="Codice articolo cometa"
-                    aria-label="Codice articolo cometa" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button id="btsSend" class="btn btn-outline-secondary" type="button">Invia</button>
-                </div>
+        <fluent-tab-panel id="homePanel">
+            
+            <div>
+                <fluent-text-field id="codartinput" appearance="outline" placeholder="Codice articolo Cometa">Codice</fluent-text-field>
+       
             </div>
-            <div id="messagediv"></div>
-        </div>
-        <br>
+           
+            <br>
 
-        <div id="tableroot" class="data-sheet-container">
+            <div id="tableroot" class="data-sheet-container">
 
-        </div>
-        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-            <span class="ms-Button-label">Anteprima</span>
-        </div>
-        <p class="ms-font-l">Anteprima scheda<b></b>.</p>
+            </div>
+            <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
+                <span class="ms-Button-label">Anteprima</span>
+            </div>
+            <p class="ms-font-l">Anteprima scheda<b></b>.</p>
+        </fluent-tab-panel>
 
+        <fluent-tab-panel id="settingsanel">
+            <li><fluent-anchor href="#" appearance="hypertext">Stuffed artichokes</fluent-anchor></li>
+            <li><fluent-anchor href="#" appearance="hypertext">Bruschetta</fluent-anchor></li>
+            <li><fluent-anchor href="#" appearance="hypertext">Oven-baked polenta</fluent-anchor></li>
+        </fluent-tab-panel>
+    </fast-tabs>
+
+
+    <fluent-dialog id="defaultDialog" hidden trap-focus modal>
+        <div style="margin: 20px;">
+          <h2>Dialog with text and a button</h2>
+          <fluent-button id="dialogCloser" appearance="accent" tabindex="0">Dismiss</fluent-button>
+        </div>
+      </fluent-dialog>
+       
     </main>
+
+
 </body>
 
 </html>

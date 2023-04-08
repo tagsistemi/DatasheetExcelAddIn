@@ -7,18 +7,40 @@
 import axios from "axios";
 import { fromByteArray } from "base64-js";
 
+import {
+  fluentButton,
+  fluentTab,
+  fluentTabPanel,
+  fluentTabs,
+  provideFluentDesignSystem,
+  fluentTextField,
+  fluentDialog,
+} from "@fluentui/web-components";
+
+let dialogElement: HTMLElement;
+let range: Excel.Range = null;
+let hstring: string = "";
+let codart: string = "";
+
 Office.onReady((info) => {
   if (info.host === Office.HostType.Excel) {
     //document.getElementById("sideload-msg").style.display = "false";
     document.getElementById("app-body").style.display = "flex";
     document.getElementById("run").onclick = run;
-    document.getElementById("btsSend").onclick = Send;
+    document.getElementById("dialogOpener").onclick = Opendialog;
+    provideFluentDesignSystem().register(
+      fluentButton(),
+      fluentTab(),
+      fluentTabPanel(),
+      fluentTabs(),
+      fluentTextField(),
+      fluentDialog()
+    );
+    document.getElementById("fastbtn").onclick = Send;
+
+    dialogElement = document.getElementById("defaultDialog") ;
   }
 });
-
-let range: Excel.Range = null;
-let hstring: string = "";
-let codart: string = "";
 
 export async function run() {
   try {
@@ -44,6 +66,10 @@ export async function run() {
   } catch (error) {
     console.error(error);
   }
+}
+
+export function Opendialog() {
+  dialogElement.hidden = false;
 }
 
 export async function Send() {
