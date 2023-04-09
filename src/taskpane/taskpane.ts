@@ -1,9 +1,3 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
-
-/* global console, document, Excel, Office */
 import axios from "axios";
 import { fromByteArray } from "base64-js";
 
@@ -14,67 +8,80 @@ import {
   fluentTabs,
   provideFluentDesignSystem,
   fluentTextField,
-  fluentDialog,
+  fluentProgressRing,
 } from "@fluentui/web-components";
 
-let dialogElement: HTMLElement;
+let ringElement: HTMLElement;
 let range: Excel.Range = null;
 let hstring: string = "";
 let codart: string = "";
+let webapiurl: string = "";
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Excel) {
     //document.getElementById("sideload-msg").style.display = "false";
     document.getElementById("app-body").style.display = "flex";
     document.getElementById("run").onclick = run;
-    document.getElementById("dialogOpener").onclick = Opendialog;
+    document.getElementById("send").onclick = Send;
+    document.getElementById("codartinput").onchange = InputChange;
+    document.getElementById("apiurlinput").onchange = InputApiChange;
+    document.getElementById("saveurl").onclick = SaveSettings;
+    webapiurl = Office.context.document.settings.get("apiUrl");
+    document.getElementById("webapiurlinfo").innerText = webapiurl;
+    
+
     provideFluentDesignSystem().register(
       fluentButton(),
       fluentTab(),
       fluentTabPanel(),
       fluentTabs(),
       fluentTextField(),
-      fluentDialog()
+      fluentProgressRing()
     );
-    document.getElementById("fastbtn").onclick = Send;
-
-    dialogElement = document.getElementById("defaultDialog") ;
+    ringElement = document.getElementById("ring");
   }
 });
+
+export function InputChange(ev: any) {
+  codart = ev.target.value;
+}
+
+export function InputApiChange(ev: any) {
+  webapiurl = ev.target.value;
+}
+
+export async function SaveSettings(ev: any) {
+  Office.context.document.settings.set("apiUrl", webapiurl);
+  await Office.context.document.settings.saveAsync();
+}
 
 export async function run() {
   try {
     await Excel.run(async (context) => {
-      /**
-       * Insert your Excel code here
-       */
-      //const range = context.workbook.getSelectedRange();
-      //let sheet = context.workbook.worksheets.getItem("Specification");
       let sheet = context.workbook.worksheets.getFirst();
       range = sheet.getUsedRange();
-      // Read the range address
       range.load("address");
-      // Update the fill color
-      // range.format.fill.color = "yellow";
       range.load("text");
       range.load("values");
+      
       await context.sync();
+     
       //console.log(`The range address was ${range.address} -- ${range.values}  `);
+      ringElement.style.display = "flex";
       await runtable();
+      ringElement.style.display = "none";
       hstring = document.getElementById("tableroot").innerHTML;
+      document.getElementById("datiinput").style.display = "flex";
     });
   } catch (error) {
     console.error(error);
   }
 }
 
-export function Opendialog() {
-  dialogElement.hidden = false;
-}
-
 export async function Send() {
   codart = (<HTMLInputElement>document.getElementById("codartinput")).value;
   if (codart) {
+    ringElement.style.display = "flex";
     console.log(hstring);
     const bytes = new TextEncoder().encode(hstring);
     const base64String = fromByteArray(bytes);
@@ -96,26 +103,32 @@ export async function Send() {
       ultimaRevisione: datastringa,
     };
     axios
-      .post("https://localhost:44372/api/SchedaHtml", schedajson)
+      .post(webapiurl, schedajson)
       .then(async (response) => {
         if (response.status == 200) {
           await SetMessage("Inserimento/aggiornamento datasheet ok", "green");
           codart = "";
           document.getElementById("codartinput").textContent = "";
+          ringElement.style.display = "none";
         }
         console.log(response.data);
       })
       .catch(async (error) => {
         await SetMessage("Inserimento/aggiornamento su datasheet non riuscito", "red");
-        console.error(error);
+        console.error(error); 
+        ringElement.style.display = "none";
       });
   } else {
     await SetMessage("Codice articolo vuoto. Invio su datasheet non effettuato", "red");
+    ringElement.style.display = "none";
   }
 }
 
 export async function SetMessage(messaggio: string, colore: string) {
   const msgroot = document.getElementById("messagediv");
+  while (msgroot.firstChild) {
+    msgroot.removeChild(msgroot.lastChild);
+  }
   const nsg = document.createElement("h5");
   nsg.style.backgroundColor = colore;
   nsg.style.padding = "8px";
@@ -169,9 +182,6 @@ export async function runtable() {
         table.appendChild(datarow);
       }
     }
-
-    const ig = document.getElementById("inputgroup");
-    ig.style.display = "block";
   } catch (error) {
     console.error(error);
   }
