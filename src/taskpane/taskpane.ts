@@ -162,7 +162,7 @@ export async function runtable() {
     caratteristicavalueheader.classList.add("grey");
     caratteristicavalueheader.classList.add("lighten-3");
     caratteristicavalueheader.classList.add("py-1");
-    caratteristicavalueheader.innerText = "Valore";
+    caratteristicavalueheader.innerText = "";
     headerrow.appendChild(caratteristicavalueheader);
     table.appendChild(headerrow);
     const root = document.getElementById("tableroot");
