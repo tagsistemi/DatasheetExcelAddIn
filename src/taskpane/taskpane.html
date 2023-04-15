@@ -20,13 +20,15 @@
     <!-- Template styles -->
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
     <link href="bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="bootstrap/mdb.min.css" rel="stylesheet" type="text/css" />
     <link href="bootstrap/style.css" rel="stylesheet" type="text/css" />
+
 </head>
 
 <body class="">
     <header class="ms-welcome__header" style="padding-top: 24px;">
         <img src="../../assets/logo.png" alt="Contoso" title="Contoso" />
-        
+
         <h2>Creazione DataSheets</h2>
         <div id="webapiurlinfo" style="font-size: xx-small;"></div>
         <fluent-progress-ring id="ring" style="display: none;"></fluent-progress-ring>
@@ -38,7 +40,7 @@
         <main id="app-body" class="ms-welcome__header ms-bgColor-neutralLighter"
             style="display: none; background-color: white; "></main>
         <fluent-tab id="home">Home</fluent-tab>
-        <fluent-tab id="settings">Settings</fluent-tab>
+        <!-- <fluent-tab id="settings">Settings</fluent-tab> -->
 
         <fluent-tab-panel id="homePanel">
             <div id="datiinput" class="" style="display: none;">
@@ -58,15 +60,18 @@
             <p class="ms-font-l">Anteprima scheda<b></b>.</p>
         </fluent-tab-panel>
 
-        <fluent-tab-panel id="settingsPanel">
-            <div id="datiinput1" " >
-                <div style="padding-top: 30px;display: flex;">
-                    <fluent-text-field id="apiurlinput" appearance="outline"
-                        placeholder="url datasheet" style="width: 100vw;"></fluent-text-field>
-                    <fluent-button id="saveurl" appearance="accent">Salva</fluent-button>
+        <!--
+            <fluent-tab-panel id="settingsPanel">
+                <div id="datiinput1" >
+                    <div style="padding-top: 30px;display: flex;">
+                        <fluent-text-field id="apiurlinput" appearance="outline"
+                            placeholder="url datasheet" ></fluent-text-field>
+                        <fluent-button id="saveurl" appearance="accent">Salva</fluent-button>
+                    </div>
                 </div>
-            </div>
-        </fluent-tab-panel>
+            </fluent-tab-panel>
+        -->
+
         </main>
 
         </fast-tabs>

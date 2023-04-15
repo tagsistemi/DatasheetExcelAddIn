@@ -24,11 +24,10 @@ Office.onReady((info) => {
     document.getElementById("run").onclick = run;
     document.getElementById("send").onclick = Send;
     document.getElementById("codartinput").onchange = InputChange;
-    document.getElementById("apiurlinput").onchange = InputApiChange;
-    document.getElementById("saveurl").onclick = SaveSettings;
+    //document.getElementById("apiurlinput").onchange = InputApiChange;
+    //document.getElementById("saveurl").onclick = SaveSettings;
     webapiurl = Office.context.document.settings.get("apiUrl");
     document.getElementById("webapiurlinfo").innerText = webapiurl;
-    
 
     provideFluentDesignSystem().register(
       fluentButton(),
@@ -63,14 +62,16 @@ export async function run() {
       range.load("address");
       range.load("text");
       range.load("values");
-      
+
       await context.sync();
-     
+
       //console.log(`The range address was ${range.address} -- ${range.values}  `);
       ringElement.style.display = "flex";
       await runtable();
       ringElement.style.display = "none";
+      // eslint-disable-next-line no-undef
       hstring = document.getElementById("tableroot").innerHTML;
+      // eslint-disable-next-line no-undef
       document.getElementById("datiinput").style.display = "flex";
     });
   } catch (error) {
@@ -79,6 +80,7 @@ export async function run() {
 }
 
 export async function Send() {
+  // eslint-disable-next-line no-undef
   codart = (<HTMLInputElement>document.getElementById("codartinput")).value;
   if (codart) {
     ringElement.style.display = "flex";
@@ -103,7 +105,7 @@ export async function Send() {
       ultimaRevisione: datastringa,
     };
     axios
-      .post(webapiurl, schedajson)
+      .post("https://form.cometa.it:9080/api/schedahtml", schedajson)
       .then(async (response) => {
         if (response.status == 200) {
           await SetMessage("Inserimento/aggiornamento datasheet ok", "green");
@@ -115,7 +117,7 @@ export async function Send() {
       })
       .catch(async (error) => {
         await SetMessage("Inserimento/aggiornamento su datasheet non riuscito", "red");
-        console.error(error); 
+        console.error(error);
         ringElement.style.display = "none";
       });
   } else {
@@ -147,13 +149,13 @@ export async function runtable() {
     table.classList.add("mb-0");
     const headerrow = document.createElement("tr");
     const caratteristicanameheader = document.createElement("th");
-    caratteristicanameheader.classList.add("text-primary");
+    caratteristicanameheader.classList.add("text-dark");
     caratteristicanameheader.classList.add("font-weight-bold");
     caratteristicanameheader.classList.add("text-uppercase");
     caratteristicanameheader.classList.add("grey");
     caratteristicanameheader.classList.add("lighten-3");
     caratteristicanameheader.classList.add("py-1");
-    caratteristicanameheader.innerText = "Caratteristica";
+    caratteristicanameheader.innerText = "Caratteristiche";
     headerrow.appendChild(caratteristicanameheader);
     const caratteristicavalueheader = document.createElement("th");
     caratteristicavalueheader.classList.add("text-primary");
