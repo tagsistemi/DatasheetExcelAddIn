@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import axios from "axios";
 import { fromByteArray } from "base64-js";
 
@@ -21,6 +22,7 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.Excel) {
     //document.getElementById("sideload-msg").style.display = "false";
     document.getElementById("app-body").style.display = "flex";
+    document.getElementById("run").style.display = "flex";
     document.getElementById("run").onclick = run;
     document.getElementById("send").onclick = Send;
     document.getElementById("codartinput").onchange = InputChange;
@@ -73,6 +75,7 @@ export async function run() {
       hstring = document.getElementById("tableroot").innerHTML;
       // eslint-disable-next-line no-undef
       document.getElementById("datiinput").style.display = "flex";
+      document.getElementById("run").style.display = "none";
     });
   } catch (error) {
     console.error(error);
@@ -147,6 +150,7 @@ export async function runtable() {
     table.classList.add("table");
     table.classList.add("table-sm");
     table.classList.add("mb-0");
+    /*
     const headerrow = document.createElement("tr");
     const caratteristicanameheader = document.createElement("th");
     caratteristicanameheader.classList.add("text-dark");
@@ -167,21 +171,37 @@ export async function runtable() {
     caratteristicavalueheader.innerText = "";
     headerrow.appendChild(caratteristicavalueheader);
     table.appendChild(headerrow);
+    */
     const root = document.getElementById("tableroot");
     root.appendChild(container).appendChild(table);
 
     for (const dataitem of range.values) {
       if (dataitem[0]) {
+        // eslint-disable-next-line no-undef
         const datarow = document.createElement("tr");
-        const caratteristicacell = document.createElement("td");
-        caratteristicacell.classList.add("font-weight-bold");
-        caratteristicacell.innerText = dataitem[0];
-        datarow.appendChild(caratteristicacell);
-        const caratteristicaValcell = document.createElement("td");
-        caratteristicaValcell.classList.add("font-weight-normal");
-        caratteristicaValcell.innerText = dataitem[1];
-        datarow.appendChild(caratteristicaValcell);
-        table.appendChild(datarow);
+        if (!dataitem[1]) {
+          const caratteristicanameheader = document.createElement("th");
+          caratteristicanameheader.setAttribute("colspan", "2");
+          caratteristicanameheader.classList.add("text-dark");
+          caratteristicanameheader.classList.add("font-weight-bold");
+          caratteristicanameheader.classList.add("text-uppercase");
+          caratteristicanameheader.classList.add("grey");
+          caratteristicanameheader.classList.add("lighten-3");
+          caratteristicanameheader.classList.add("py-1");
+          caratteristicanameheader.innerText = dataitem[0];
+          datarow.appendChild(caratteristicanameheader);
+          table.appendChild(datarow);
+        } else {
+          const caratteristicacell = document.createElement("td");
+          caratteristicacell.classList.add("font-weight-bold");
+          caratteristicacell.innerText = dataitem[0];
+          datarow.appendChild(caratteristicacell);
+          const caratteristicaValcell = document.createElement("td");
+          caratteristicaValcell.classList.add("font-weight-normal");
+          caratteristicaValcell.innerText = dataitem[1];
+          datarow.appendChild(caratteristicaValcell);
+          table.appendChild(datarow);
+        }
       }
     }
   } catch (error) {
