@@ -28,7 +28,9 @@ Office.onReady((info) => {
     document.getElementById("codartinput").onchange = InputChange;
     //document.getElementById("apiurlinput").onchange = InputApiChange;
     //document.getElementById("saveurl").onclick = SaveSettings;
-    webapiurl = Office.context.document.settings.get("apiUrl");
+    // webapiurl = Office.context.document.settings.get("apiUrl");
+    webapiurl = "https://form.cometa.it:8088/api/schedahtml";
+
     document.getElementById("webapiurlinfo").innerText = webapiurl;
 
     provideFluentDesignSystem().register(
@@ -104,11 +106,11 @@ export async function Send() {
       note: base64String,
       forzaUpdate: false,
       idProvider: 0,
-      noteRevisione: "Inserito da excel",
+      noteRevisione: "SCHEDA DA EXCEL",
       ultimaRevisione: datastringa,
     };
     axios
-      .post("https://form.cometa.it:9080/api/schedahtml", schedajson)
+      .post("https://form.cometa.it:8088/api/schedahtml", schedajson)
       .then(async (response) => {
         if (response.status == 200) {
           await SetMessage("Inserimento/aggiornamento datasheet ok", "green");
